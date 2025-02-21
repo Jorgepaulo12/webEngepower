@@ -1031,7 +1031,9 @@ de consultoria.
 
       {/* WhatsApp Button */}
       <motion.a
-        href="https://wa.me/258842390139"
+        href={`https://wa.me/258842390139?text=${encodeURIComponent(
+          "Olá! Gostaria de saber mais sobre os serviços da ENGEPOWER. Podem me ajudar?"
+        )}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 z-50"
