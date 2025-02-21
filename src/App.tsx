@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Building2, Users2, Hammer, Phone, ChevronRight, Facebook, Instagram, Linkedin as LinkedIn, Mail, Send, Menu, X, MapPin, Wrench, Sun, Droplet, Zap, Waves, Settings, MessageCircle } from 'lucide-react';
+import { Building2, Users2, Hammer, Phone, ChevronRight, Facebook, Instagram, Linkedin as LinkedIn, Mail, Send, Menu, X, MapPin, Wrench, Sun, Droplet, Zap, Waves, Settings, MessageCircle, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -221,6 +221,10 @@ function App() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
 
   useEffect(() => {
     AOS.init({
@@ -243,6 +247,16 @@ function App() {
       setIsInitialLoading(false);
     }, 2000);
   }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -296,13 +310,13 @@ function App() {
   }, [chatHistory]);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
       <AnimatePresence>
         {isInitialLoading && <LoadingScreen />}
       </AnimatePresence>
 
       {/* Header com Menu Mobile */}
-      <header className="bg-white shadow-md fixed w-full z-50">
+      <header className="bg-white dark:bg-gray-800 shadow-md fixed w-full z-50">
         <nav className="container mx-auto px-6 h-24">
           <div className="flex justify-between items-center h-full">
             <div className="flex items-center space-x-2">
@@ -323,19 +337,37 @@ function App() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center h-full">
-              <a href="#inicio" className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">Início</a>
-              <a href="#sobre" className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">Sobre</a>
-              <a href="#servicos" className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">Serviços</a>
-              <a href="#projetos" className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">Projetos</a>
-              <a href="#contato" className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">Contato</a>
-              
-              {/* Dropdown Menu */}
+              {[
+                { href: "#inicio", label: "Início" },
+                { href: "#sobre", label: "Sobre" },
+                { href: "#servicos", label: "Serviços" },
+                { href: "#projetos", label: "Projetos" },
+                { href: "#contato", label: "Contato" }
+              ].map((item) => (
+                <div key={item.href} className="h-full flex items-center relative group">
+                  <a 
+                    href={item.href} 
+                    className="px-4 py-2 text-gray-700 dark:text-gray-200 group-hover:text-orange-500 transition-colors relative"
+                  >
+                    {item.label}
+                    <div className="absolute bottom-0 left-0 w-full h-1 bg-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  </a>
+                  {/* Card no hover */}
+                  <div className="absolute top-full left-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <div className="bg-white dark:bg-gray-700 rounded-lg shadow-xl p-4">
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{item.label}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Menu Mais com dropdown */}
               <div 
-                className="relative h-full flex items-center"
+                className="relative h-full flex items-center group"
                 onMouseEnter={() => setIsDropdownOpen(true)}
                 onMouseLeave={() => setIsDropdownOpen(false)}
               >
-                <button className="h-full flex items-center px-4 text-gray-700 hover:text-orange-500 transition-colors">
+                <button className="h-full flex items-center px-4 text-gray-700 dark:text-gray-200 hover:text-orange-500 transition-colors">
                   Mais
                   <ChevronRight className={`w-4 h-4 ml-1 transform transition-transform ${isDropdownOpen ? 'rotate-90' : ''}`} />
                 </button>
@@ -346,29 +378,41 @@ function App() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                    className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-xl py-2 z-50"
                   >
                     <a 
                       href="#areas-atuacao" 
-                      className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-gray-600 hover:text-orange-500 transition-colors"
                     >
                       Áreas de Atuação
                     </a>
                     <a 
                       href="#experiencia" 
-                      className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-gray-600 hover:text-orange-500 transition-colors"
                     >
                       Experiência
                     </a>
                     <a 
                       href="#presenca" 
-                      className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                      className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-gray-600 hover:text-orange-500 transition-colors"
                     >
                       Nossa Presença
                     </a>
                   </motion.div>
                 )}
               </div>
+
+              {/* Botão Dark Mode */}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="ml-4 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 text-orange-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+                )}
+              </button>
             </div>
           </div>
         </nav>
@@ -405,6 +449,22 @@ function App() {
                   <a href="#areas-atuacao" className="text-gray-700 hover:text-orange-500 transition-colors">Áreas de Atuação</a>
                   <a href="#experiencia" className="text-gray-700 hover:text-orange-500 transition-colors">Experiência</a>
                   <a href="#presenca" className="text-gray-700 hover:text-orange-500 transition-colors">Nossa Presença</a>
+                  <button
+                    onClick={() => setIsDarkMode(!isDarkMode)}
+                    className="flex items-center space-x-2 text-gray-700 dark:text-gray-300"
+                  >
+                    {isDarkMode ? (
+                      <>
+                        <Sun className="w-5 h-5" />
+                        <span>Modo Claro</span>
+                      </>
+                    ) : (
+                      <>
+                        <Moon className="w-5 h-5" />
+                        <span>Modo Escuro</span>
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -451,10 +511,10 @@ function App() {
       </section>
 
       {/* Services Section */}
-      <section id="servicos" className="py-20 px-6 bg-gray-100">
+      <section id="servicos" className="py-20 px-6 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">Saiba mais sobre os nossos serviços</h2>
-          <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">Saiba mais sobre os nossos serviços</h2>
+          <p className="text-center text-gray-600 dark:text-gray-300 mb-16 max-w-3xl mx-auto">
             Na EngePOWER, somos especializados em fornecer soluções inovadoras nas áreas de construção e energia.
             Com um compromisso com a sustentabilidade e tecnologia de ponta, fornecemos também serviços de
             alto nível, desde o desenvolvimento de infraestruturas e projetos de energia renovável.
@@ -507,14 +567,14 @@ function App() {
                 key={index}
                 data-aos="flip-left"
                 data-aos-delay={index * 100}
-                className="bg-white p-8 rounded-xl shadow-lg card-3d group hover:bg-orange-50 transition-colors duration-300"
+                className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg card-3d group hover:bg-orange-50 transition-colors duration-300"
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="transform group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
                   <h3 className="text-xl font-bold mt-4 mb-2">{service.title}</h3>
-                  <p className="text-gray-600">{service.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
                 </div>
               </div>
             ))}
@@ -523,7 +583,7 @@ function App() {
       </section>
 
       {/* Áreas de Atuação Section */}
-      <section id="areas-atuacao" className="py-20 bg-white">
+      <section id="areas-atuacao" className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -531,8 +591,8 @@ function App() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <h2 className="text-3xl font-bold text-center mb-4">Áreas de Atuação</h2>
-            <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">Áreas de Atuação</h2>
+            <p className="text-center text-gray-600 dark:text-gray-300 mb-16 max-w-3xl mx-auto">
               Oferecemos soluções completas e especializadas em diversas áreas da engenharia e construção
             </p>
           </motion.div>
@@ -584,7 +644,7 @@ function App() {
                         whileHover={{ x: 10, color: "#f97316" }}
                       >
                         <ChevronRight className="w-5 h-5 text-orange-500 flex-shrink-0 mt-1" />
-                        <span className="text-gray-700 transition-colors">{item}</span>
+                        <span className="text-gray-700 dark:text-gray-300 transition-colors">{item}</span>
                       </motion.li>
                     ))}
                   </motion.ul>
@@ -596,9 +656,9 @@ function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projetos" className="py-20 bg-gray-100">
+      <section id="projetos" className="py-20 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-16">Nossos Projetos</h2>
+          <h2 className="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">Nossos Projetos</h2>
           <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
             <div className="w-full lg:w-1/2" data-aos="fade-right">
               <img 
@@ -608,9 +668,9 @@ function App() {
               />
             </div>
             <div className="lg:w-1/2" data-aos="fade-left">
-              <h3 className="text-3xl font-bold mb-4">{projects[currentProject].title}</h3>
-              <p className="text-orange-500 font-semibold mb-4">{projects[currentProject].location}</p>
-              <p className="text-gray-600 mb-8">{projects[currentProject].description}</p>
+              <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">{projects[currentProject].title}</h3>
+              <p className="text-orange-500 font-semibold mb-4 text-gray-600 dark:text-gray-300">{projects[currentProject].location}</p>
+              <p className="text-gray-600 dark:text-gray-300 mb-8">{projects[currentProject].description}</p>
               <div className="flex space-x-4">
                 {projects.map((_, index) => (
                   <button
@@ -628,14 +688,14 @@ function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experiencia" className="py-16 md:py-20 bg-white">
+      <section id="experiencia" className="py-16 md:py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Coluna da esquerda - Título */}
             <div className="space-y-6">
               <div>
-                <p className="text-orange-500 font-semibold mb-4">Quem Somos</p>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+                <p className="text-orange-500 font-semibold mb-4 text-gray-900 dark:text-white">Quem Somos</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold leading-tight text-gray-900 dark:text-white">
                   Uma Experiência<br />
                   Excepcionalmente<br />
                   Única Sob Medida<br />
@@ -669,10 +729,10 @@ function App() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-gray-50 p-6 rounded-xl"
+                  className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl"
                 >
-                  <h3 className="text-xl font-bold mb-4">Com Vasta Experiência na área de:</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Com Vasta Experiência na área de:</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
                     Construção e Manutenção de Estradas asfaltadas, Terraplanadas e Pavês
                   </p>
                 </motion.div>
@@ -681,10 +741,10 @@ function App() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="bg-gray-50 p-6 rounded-xl"
+                  className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl"
                 >
-                  <h3 className="text-xl font-bold mb-4">Inclusive Estruturas de Grande Engenharia como:</h3>
-                  <p className="text-gray-600">
+                  <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Inclusive Estruturas de Grande Engenharia como:</h3>
+                  <p className="text-gray-600 dark:text-gray-300">
                     Pontes de Betão armado, Lançamento de Pontes metálicas e Aqueodutos de várias dimensões
                   </p>
                 </motion.div>
@@ -708,9 +768,9 @@ function App() {
       </section>
 
       {/* Map and Chatbot Section */}
-      <section id="presenca" className="pt-20 bg-gray-100">
+      <section id="presenca" className="pt-20 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-16">Nossa Presença em Moçambique</h2>
+          <h2 className="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">Nossa Presença em Moçambique</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="rounded-xl overflow-hidden shadow-xl h-[300px] md:h-[400px]">
               <LoadScript googleMapsApiKey="AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI">
@@ -741,8 +801,8 @@ function App() {
                       onCloseClick={() => setSelectedMarker(null)}
                     >
                       <div>
-                        <h3 className="font-bold">{selectedMarker.name}</h3>
-                        <p>{selectedMarker.projects} Projetos</p>
+                        <h3 className="font-bold text-gray-900 dark:text-white">{selectedMarker.name}</h3>
+                        <p className="text-gray-600 dark:text-gray-300">{selectedMarker.projects} Projetos</p>
                       </div>
                     </InfoWindow>
                   )}
@@ -750,8 +810,8 @@ function App() {
               </LoadScript>
             </div>
 
-            <div className="bg-white rounded-xl shadow-xl p-6 flex flex-col h-[400px]">
-              <h3 className="text-xl font-bold mb-4">Chat ENGEP•WER</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 flex flex-col h-[400px]">
+              <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Chat ENGEP•WER</h3>
               <div 
                 ref={chatContainerRef}
                 className="flex-1 overflow-y-auto mb-4 space-y-4"
@@ -786,7 +846,7 @@ function App() {
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
                   placeholder="Digite sua mensagem..."
-                  className="flex-1 rounded-lg border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200"
+                  className="flex-1 rounded-lg border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 />
                 <button
                   type="submit"
@@ -801,7 +861,7 @@ function App() {
       </section>
 
       {/* Sobre Section - Movida para depois do mapa/chatbot */}
-      <section id="sobre" className="py-20 bg-white">
+      <section id="sobre" className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -810,10 +870,10 @@ function App() {
               transition={{ duration: 0.5 }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-bold">Sobre a ENGEPOWER</h2>
-              <p className="text-gray-600 leading-relaxed">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Sobre a ENGEPOWER</h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
               é uma sociedade individual com um alvará da 4ª Classe com um capital de 
-5,000,000.00 (Cinco Milhões de Meticais), sediada na cidade de Maputo e 
+5,000,000.00 (Cinco Milhões de Meticais), sediada na cidade de Lichinga e 
 representações no Centro e Norte de Moçambique, cuja atividade baseia-se na particular especialização dos seus sócios e colaboradores chave nas 
 áreas de estruturas de engenharia civil, tecnologias e gestão de processos 
 de construção, fundações e obras enterradas, geotecnia e vias de 
@@ -827,19 +887,19 @@ de consultoria.
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
                   <div className="text-4xl font-bold text-orange-500">30+</div>
-                  <div className="text-gray-600">Projetos Concluídos</div>
+                  <div className="text-gray-600 dark:text-gray-300">Projetos Concluídos</div>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold text-orange-500">5+</div>
-                  <div className="text-gray-600">Anos de Experiência</div>
+                  <div className="text-gray-600 dark:text-gray-300">Anos de Experiência</div>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold text-orange-500">11+</div>
-                  <div className="text-gray-600">Profissionais</div>
+                  <div className="text-gray-600 dark:text-gray-300">Profissionais</div>
                 </div>
                 <div className="text-center">
                   <div className="text-4xl font-bold text-orange-500">1</div>
-                  <div className="text-gray-600">Escritórios</div>
+                  <div className="text-gray-600 dark:text-gray-300">Escritórios</div>
                 </div>
               </div>
             </motion.div>
@@ -855,8 +915,8 @@ de consultoria.
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -right-6 bg-orange-500 text-white p-6 rounded-lg shadow-xl">
-                <p className="text-lg font-semibold">Compromisso com a Qualidade</p>
-                <p className="text-sm mt-2">E garantida</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">Compromisso com a Qualidade</p>
+                <p className="text-sm mt-2 text-gray-600 dark:text-gray-300">E garantida</p>
               </div>
             </motion.div>
           </div>
@@ -864,41 +924,41 @@ de consultoria.
       </section>
 
       {/* Contact Section with Form */}
-      <section id="contato" className="py-20 px-6 bg-gray-100">
+      <section id="contato" className="py-20 px-6 bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-16">Entre em Contato</h2>
+            <h2 className="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">Entre em Contato</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
               <div data-aos="fade-right">
                 <form onSubmit={handleFormSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nome</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome</label>
                     <input
                       type="text"
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200"
+                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                     <input
                       type="email"
                       id="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200"
+                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">Mensagem</label>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensagem</label>
                     <textarea
                       id="message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200"
+                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                   </div>
                   <motion.button
@@ -914,21 +974,21 @@ de consultoria.
               </div>
               <div data-aos="fade-left" className="flex flex-col justify-center">
                 <div className="bg-orange-500 text-white p-8 rounded-lg">
-                  <h3 className="text-2xl font-bold mb-4">Informações de Contato</h3>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Informações de Contato</h3>
                   <div className="space-y-4">
-                    <p className="flex items-center space-x-3">
+                    <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                       <Phone className="w-5 h-5" />
                       <span>+258 866 414 240</span>
                     </p>
-                    <p className="flex items-center space-x-3">
+                    <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                       <MessageCircle className="w-5 h-5 text-green-500" />
                       <span>+258 842 390 139 (WhatsApp)</span>
                     </p>
-                    <p className="flex items-center space-x-3">
+                    <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                       <Mail className="w-5 h-5 flex-shrink-0" />
                       <span className="break-all">alygulamo@enge-power.com</span>
                     </p>
-                    <p className="flex items-center space-x-3">
+                    <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                       <MapPin className="w-5 h-5" />
                       <span>Niassa, Moçambique</span>
                     </p>
@@ -941,7 +1001,7 @@ de consultoria.
       </section>
 
       {/* Footer with Social Media */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-12 dark:bg-gray-800">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Coluna 1 - Logo e Descrição */}
@@ -953,48 +1013,48 @@ de consultoria.
                   className="h-20 w-auto"
                 />
               </div>
-              <p className="text-gray-400">Excelência em Construção e Engenharia</p>
+              <p className="text-gray-400 dark:text-gray-400">Excelência em Construção e Engenharia</p>
             </div>
 
             {/* Coluna 2 - Links Rápidos */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Links Rápidos</h4>
+              <h4 className="text-lg font-semibold mb-4 text-gray-400 dark:text-gray-400">Links Rápidos</h4>
               <ul className="space-y-2">
-                <li><a href="#inicio" className="text-gray-400 hover:text-orange-500">Início</a></li>
-                <li><a href="#servicos" className="text-gray-400 hover:text-orange-500">Serviços</a></li>
-                <li><a href="#projetos" className="text-gray-400 hover:text-orange-500">Projetos</a></li>
-                <li><a href="#contato" className="text-gray-400 hover:text-orange-500">Contato</a></li>
+                <li><a href="#inicio" className="text-gray-400 dark:text-gray-400 hover:text-orange-500">Início</a></li>
+                <li><a href="#servicos" className="text-gray-400 dark:text-gray-400 hover:text-orange-500">Serviços</a></li>
+                <li><a href="#projetos" className="text-gray-400 dark:text-gray-400 hover:text-orange-500">Projetos</a></li>
+                <li><a href="#contato" className="text-gray-400 dark:text-gray-400 hover:text-orange-500">Contato</a></li>
               </ul>
             </div>
 
             {/* Coluna 3 - Contatos */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contatos</h4>
+              <h4 className="text-lg font-semibold mb-4 text-gray-400 dark:text-gray-400">Contatos</h4>
               <div className="space-y-3">
-                <p className="flex items-center space-x-3 text-gray-400">
+                <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
                   <Phone className="w-5 h-5" />
                   <span>+258 866 414 240</span>
                 </p>
-                <p className="flex items-center space-x-3 text-gray-400">
+                <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
                   <MessageCircle className="w-5 h-5 text-green-500" />
                   <span>+258 842 390 139 (WhatsApp)</span>
                 </p>
-                <p className="flex items-center space-x-3 text-gray-400">
+                <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
                   <Mail className="w-5 h-5 flex-shrink-0" />
                   <span className="break-all">alygulamo@enge-power.com</span>
                 </p>
-                <p className="flex items-center space-x-3 text-gray-400">
+                <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
                   <MapPin className="w-5 h-5" />
                   <span>Niassa, Moçambique</span>
                 </p>
                 <div className="flex space-x-4 pt-4">
-                  <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+                  <a href="#" className="text-gray-400 dark:text-gray-400 hover:text-orange-500 transition-colors">
                     <Facebook className="w-6 h-6" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+                  <a href="#" className="text-gray-400 dark:text-gray-400 hover:text-orange-500 transition-colors">
                     <Instagram className="w-6 h-6" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+                  <a href="#" className="text-gray-400 dark:text-gray-400 hover:text-orange-500 transition-colors">
                     <LinkedIn className="w-6 h-6" />
                   </a>
                 </div>
@@ -1003,8 +1063,8 @@ de consultoria.
 
             {/* Coluna 4 - Newsletter */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Newsletter</h4>
-              <p className="text-gray-400 mb-4">Inscreva-se para receber nossas novidades</p>
+              <h4 className="text-lg font-semibold mb-4 text-gray-400 dark:text-gray-400">Newsletter</h4>
+              <p className="text-gray-400 dark:text-gray-400 mb-4">Inscreva-se para receber nossas novidades</p>
               <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
                 <input
                   type="email"
@@ -1024,7 +1084,7 @@ de consultoria.
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-400">© 2025 ENGEPOWER. Todos os direitos reservados.</p>
+            <p className="text-gray-400 dark:text-gray-400">© 2025 ENGEPOWER. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
@@ -1036,7 +1096,7 @@ de consultoria.
         )}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 z-50"
+        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#20ba57] z-50"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         initial={{ scale: 0 }}
@@ -1047,7 +1107,12 @@ de consultoria.
           damping: 20
         }}
       >
-        <MessageCircle className="w-6 h-6" />
+        <svg 
+          viewBox="0 0 32 32" 
+          className="w-6 h-6 fill-current"
+        >
+          <path d="M16 2C8.28 2 2 8.28 2 16s6.28 14 14 14 14-6.28 14-14S23.72 2 16 2zm7.34 19.42c-.35.98-1.76 1.8-2.44 1.89-.62.09-1.43.16-4.06-.85-3.37-1.3-5.54-4.68-5.71-4.9-.16-.21-1.35-1.81-1.35-3.45 0-1.65.86-2.45 1.21-2.79.29-.29.77-.42 1.23-.42.15 0 .28.01.4.02.35.02.53.04.76.57.29.67.98 2.34 1.07 2.51.09.17.16.38.03.59-.13.21-.19.34-.38.54s-.36.36-.61.58c-.19.2-.4.42-.17.79.23.37 1.04 1.6 2.24 2.59 1.54 1.26 2.83 1.65 3.23 1.84.3.14.66.11.88-.14.28-.31.63-.82.98-1.33.25-.36.57-.41.9-.28.34.13 2.13 1.02 2.51 1.2.37.18.62.27.71.42.09.15.09.88-.26 1.85z"/>
+        </svg>
       </motion.a>
     </div>
   );
