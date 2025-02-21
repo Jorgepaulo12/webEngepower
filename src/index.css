@@ -110,3 +110,22 @@ body {
     overflow-x: hidden;
   }
 }
+
+/* Adicione estas classes para transição suave do tema */
+.transition-theme {
+  @apply transition-colors duration-200;
+}
+
+/* Ajuste as cores do tema escuro */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  @apply bg-gray-900 text-white;
+}
+
+/* Transição suave para todos os elementos */
+* {
+  @apply transition-colors duration-200;
+}
