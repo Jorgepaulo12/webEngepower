@@ -83,3 +83,30 @@ body {
 .swiper-slide-active {
   opacity: 1 !important;
 }
+
+/* Adicione estas classes para melhor responsividade */
+@layer utilities {
+  .text-responsive {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+  
+  .padding-responsive {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+  
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto padding-responsive;
+  }
+}
+
+/* Ajuste o menu mobile */
+.mobile-menu {
+  @apply fixed top-0 left-0 w-full h-full bg-white z-50 transform transition-transform duration-300;
+}
+
+/* Ajuste o scroll em dispositivos móveis */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
+}
