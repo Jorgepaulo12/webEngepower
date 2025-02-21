@@ -419,7 +419,7 @@ function App() {
           effect="fade"
           autoplay={{ delay: 4000 }}
           loop={true}
-          className="h-[60vh] md:h-[80vh]"
+          className="h-[50vh] sm:h-[60vh] md:h-[80vh]"
         >
           {heroSlides.map((slide, index) => (
             <SwiperSlide key={index}>
@@ -432,8 +432,8 @@ function App() {
                 <div className="absolute inset-0 bg-black/50">
                   <div className="container mx-auto px-4 md:px-6 h-full flex items-center">
                     <div className="text-white max-w-2xl" data-aos="fade-right">
-                      <h1 className="text-3xl md:text-6xl font-bold mb-4">{slide.title}</h1>
-                      <p className="text-lg md:text-xl mb-8">{slide.subtitle}</p>
+                      <h1 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-4">{slide.title}</h1>
+                      <p className="text-base sm:text-lg md:text-xl mb-8">{slide.subtitle}</p>
                       <button 
                         onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
                         className="bg-orange-500 text-white px-6 md:px-8 py-3 rounded-lg hover:bg-orange-600 transition-all transform hover:scale-105 flex items-center space-x-2"
@@ -537,7 +537,7 @@ function App() {
             </p>
           </motion.div>
           
-          <div className="space-y-16 md:space-y-32">
+          <div className="space-y-12 md:space-y-32">
             {areasAtuacao.map((area, index) => (
               <motion.div
                 key={area.title}
@@ -546,14 +546,14 @@ function App() {
                 } gap-6 md:gap-12 items-center`}
               >
                 <motion.div 
-                  className="md:w-1/2"
+                  className="w-full md:w-1/2"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
                 >
                   <motion.img
                     src={area.image}
                     alt={area.title}
-                    className="rounded-lg shadow-xl object-cover h-[400px] w-full"
+                    className="rounded-lg shadow-xl object-cover h-[250px] md:h-[400px] w-full"
                     initial={{ filter: "grayscale(100%)" }}
                     whileInView={{ filter: "grayscale(0%)" }}
                     transition={{ duration: 1 }}
@@ -599,12 +599,12 @@ function App() {
       <section id="projetos" className="py-20 bg-gray-100">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-16">Nossos Projetos</h2>
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="lg:w-1/2" data-aos="fade-right">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            <div className="w-full lg:w-1/2" data-aos="fade-right">
               <img 
                 src={projects[currentProject].image}
                 alt={projects[currentProject].title}
-                className="rounded-lg shadow-2xl transition-all duration-500 transform hover:scale-105"
+                className="rounded-lg shadow-2xl w-full h-[250px] md:h-[400px] object-cover"
               />
             </div>
             <div className="lg:w-1/2" data-aos="fade-left">
@@ -635,7 +635,7 @@ function App() {
             <div className="space-y-6">
               <div>
                 <p className="text-orange-500 font-semibold mb-4">Quem Somos</p>
-                <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
                   Uma Experiência<br />
                   Excepcionalmente<br />
                   Única Sob Medida<br />
@@ -712,10 +712,13 @@ function App() {
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-16">Nossa Presença em Moçambique</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-            <div className="rounded-xl overflow-hidden shadow-xl">
+            <div className="rounded-xl overflow-hidden shadow-xl h-[300px] md:h-[400px]">
               <LoadScript googleMapsApiKey="AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI">
                 <GoogleMap
-                  mapContainerStyle={mapContainerStyle}
+                  mapContainerStyle={{
+                    width: '100%',
+                    height: '100%'
+                  }}
                   center={center}
                   zoom={6}
                 >
@@ -940,7 +943,7 @@ de consultoria.
       {/* Footer with Social Media */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Coluna 1 - Logo e Descrição */}
             <div>
               <div className="flex items-center space-x-2 mb-6">
