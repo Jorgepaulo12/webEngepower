@@ -263,6 +263,20 @@ const areasAtuacao = [
       "Testes de carga e eficiência"
     ],
     image: "https://image.made-in-china.com/2f0j00AhukDCpykibS/gerador-silencioso-de-diesel-de-20-kw-30-kw-40-kw-50-kw-60-kW-com-pequena-pot-ncia-e-garantia-global.webp"
+  },
+  {
+    title: "SISTEMAS DE RASTREAMENTO VEICULAR",
+    items: [
+      "Instalação de GPS em frotas",
+      "Monitoramento em tempo real",
+      "Gestão de rotas e logística",
+      "Controle de combustível",
+      "Relatórios de trajetos",
+      "Manutenção preventiva",
+      "Bloqueio remoto de veículos",
+      "Suporte técnico especializado"
+    ],
+    image: "https://img4.dhresource.com/webp/m/0x0/f3/albu/jc/s/01/032e2fe1-b5bf-4a58-8584-050c250e9d50.jpg"
   }
 ];
 
