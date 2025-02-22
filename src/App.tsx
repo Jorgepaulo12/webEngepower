@@ -248,7 +248,7 @@ const areasAtuacao = [
       "Manutenção preventiva e corretiva",
       "Testes e comissionamento"
     ],
-    image: "https://eletropedro.com.br/wp-content/uploads/2021/02/WhatsApp-Image-2021-02-22-at-16.31.04-1.jpeg"
+    image: "https://i0.wp.com/mfenergy.com.br/wp-content/uploads/2023/08/Postes-de-Energia.png?w=500&ssl=1"
   },
   {
     title: "SISTEMAS DE GERAÇÃO DE ENERGIA",
