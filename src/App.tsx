@@ -248,7 +248,7 @@ const areasAtuacao = [
       "Manutenção preventiva e corretiva",
       "Testes e comissionamento"
     ],
-    image: "https://i0.wp.com/mfenergy.com.br/wp-content/uploads/2023/08/Postes-de-Energia.png?w=500&ssl=1"
+    image: "https://eletropedro.com.br/wp-content/uploads/2021/02/WhatsApp-Image-2021-02-22-at-16.31.04-1.jpeg"
   },
   {
     title: "SISTEMAS DE GERAÇÃO DE ENERGIA",
@@ -295,6 +295,8 @@ function App() {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark';
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -328,10 +330,41 @@ function App() {
     }
   }, [isDarkMode]);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você implementaria a lógica de envio do formulário
-    console.log('Formulário enviado:', formData);
+    setIsSubmitting(true);
+    
+    try {
+      // Criar URLSearchParams para enviar dados como form-urlencoded
+      const formBody = new URLSearchParams();
+      formBody.append('nome', formData.name);
+      formBody.append('email', formData.email);
+      formBody.append('mensagem', formData.message);
+
+      const response = await fetch('https://vidplusmz.vercel.app/enviar-email/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formBody
+      });
+
+      if (response.ok) {
+        // Limpar o formulário após envio bem-sucedido
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        });
+        setIsFormSubmitted(true); // Set form submitted state to true
+      } else {
+        throw new Error('Falha ao enviar mensagem');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChatSubmit = async (e: React.FormEvent) => {
@@ -1000,47 +1033,69 @@ de consultoria.
             <h2 className="text-3xl font-bold text-center mb-16 text-gray-900 dark:text-white">Entre em Contato</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
               <div data-aos="fade-right">
-                <form onSubmit={handleFormSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome</label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensagem</label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    type="submit"
-                    className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-all flex items-center justify-center space-x-2"
+                {isFormSubmitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="bg-green-500 text-white p-6 rounded-lg text-center"
                   >
-                    <span>Enviar Mensagem</span>
-                    <Send className="w-4 h-4" />
-                  </motion.button>
-                </form>
+                    <h3 className="text-2xl font-bold mb-4">Obrigado!</h3>
+                    <p>Recebemos sua mensagem e entraremos em contato em breve.</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleFormSubmit} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome</label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensagem</label>
+                      <textarea
+                        id="message"
+                        rows={4}
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        className="mt-1 block w-full rounded-md border-gray-300 focus:border-orange-500 focus:ring focus:ring-orange-200 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      />
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-all flex items-center justify-center space-x-2"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                      ) : (
+                        <>
+                          <span>Enviar Mensagem</span>
+                          <Send className="w-4 h-4" />
+                        </>
+                      )}
+                    </motion.button>
+                  </form>
+                )}
               </div>
               <div data-aos="fade-left" className="flex flex-col justify-center">
                 <div className="bg-orange-500 text-white p-8 rounded-lg">
