@@ -248,7 +248,7 @@ const areasAtuacao = [
       "Manutenção preventiva e corretiva",
       "Testes e comissionamento"
     ],
-    image: "https://eletropedro.com.br/wp-content/uploads/2021/02/WhatsApp-Image-2021-02-22-at-16.31.04-1.jpeg"
+    image: "https://previews.123rf.com/images/puenny/puenny1408/puenny140800045/30466241-transformador-no-poste-de-eletricidade-esta%C3%A7%C3%A3o-de-alta-pot%C3%AAncia.jpg"
   },
   {
     title: "SISTEMAS DE GERAÇÃO DE ENERGIA",
