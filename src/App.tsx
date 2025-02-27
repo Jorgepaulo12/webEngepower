@@ -248,7 +248,7 @@ const areasAtuacao = [
       "Manutenção preventiva e corretiva",
       "Testes e comissionamento"
     ],
-    image: "https://previews.123rf.com/images/puenny/puenny1408/puenny140800045/30466241-transformador-no-poste-de-eletricidade-esta%C3%A7%C3%A3o-de-alta-pot%C3%AAncia.jpg"
+    image: "https://eletropedro.com.br/wp-content/uploads/2021/02/WhatsApp-Image-2021-02-22-at-16.31.04-1.jpeg"
   },
   {
     title: "SISTEMAS DE GERAÇÃO DE ENERGIA",
@@ -1105,8 +1105,9 @@ de consultoria.
                       <Phone className="w-5 h-5" />
                       <span>+258 866 414 240</span>
                     </p>
-                    <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                      <MessageCircle className="w-5 h-5 text-green-500" />
+                    <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-300">
+                     <MessageCircle className="w-5 h-5 text-white" />
+
                       <span>+258 842 390 139 (WhatsApp)</span>
                     </p>
                     <p className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
@@ -1161,7 +1162,8 @@ de consultoria.
                   <span>+258 866 414 240</span>
                 </p>
                 <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
-                  <MessageCircle className="w-5 h-5 text-green-500" />
+                     <MessageCircle className="w-5 h-5 " />
+
                   <span>+258 842 390 139 (WhatsApp)</span>
                 </p>
                 <p className="flex items-center space-x-3 text-gray-400 dark:text-gray-400">
