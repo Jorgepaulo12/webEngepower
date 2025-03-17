@@ -248,7 +248,7 @@ const areasAtuacao = [
       "Manutenção preventiva e corretiva",
       "Testes e comissionamento"
     ],
-    image: "https://eletropedro.com.br/wp-content/uploads/2021/02/WhatsApp-Image-2021-02-22-at-16.31.04-1.jpeg"
+    image: "https://insp-therm.com.br/wp-content/uploads/2023/01/SUBESTACAO-DE-ALTA-TENSAO-1-scaled-2048x1301.jpg"
   },
   {
     title: "SISTEMAS DE GERAÇÃO DE ENERGIA",
