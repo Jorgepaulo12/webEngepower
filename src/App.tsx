@@ -181,7 +181,7 @@ const areasAtuacao = [
       "Pavimentações",
       "Movimentação de terras"
     ],
-    image: "https://www.lucasdorioverde.mt.gov.br/arquivos/noticias/7133/g/pref_lrv.jpg"
+    image: "http://allfibra.pt/wp-content/uploads/2018/12/Via_da_galiza-1.jpg"
   },
   {
     title: "SUSTENTABILIDADE",
@@ -222,7 +222,7 @@ const areasAtuacao = [
       "Avaliação da segurança e reforço de estruturas existentes",
       "Pareceres sobre concursos"
     ],
-    image: "https://gppd.com.br/wp-content/uploads/2020/07/png.jpg"
+    image: "https://thinkerest.com.br/wp-content/uploads/elementor/thumbs/consultoria-em-gestao-empresarial-planejamento-orcamentos-thinkerest-consultoria-1-q9ofnnznrnzexz24khkgt4kd7449hpyxpl1ubygj6y.jpg"
   },
   {
     title: "ENERGIA SOLAR",
@@ -905,7 +905,7 @@ function App() {
                     >
                       <div>
                         <h3 className="font-bold text-gray-900 dark:text-white">{selectedMarker.name}</h3>
-                        <p className="text-gray-600 dark:text-gray-300">{selectedMarker.projects} Projetos</p>
+                        <p className="text-gray-600 dark:text-gray-300">{selectedMarker.projects} sProjetos</p>
                       </div>
                     </InfoWindow>
                   )}
@@ -938,7 +938,7 @@ function App() {
                 {isChatLoading && (
                   <div className="flex justify-start">
                     <div className="bg-gray-100 text-gray-800 rounded-lg p-3">
-                      Digitando...
+                      Digitando....
                     </div>
                   </div>
                 )}
@@ -989,7 +989,7 @@ de consultoria.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-orange-500">30+</div>
+                  <div className="text-4xl font-bold text-orange-500">18+</div>
                   <div className="text-gray-600 dark:text-gray-300">Projetos Concluídos</div>
                 </div>
                 <div className="text-center">
@@ -997,7 +997,7 @@ de consultoria.
                   <div className="text-gray-600 dark:text-gray-300">Anos de Experiência</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-orange-500">11+</div>
+                  <div className="text-4xl font-bold text-orange-500">16+</div>
                   <div className="text-gray-600 dark:text-gray-300">Profissionais</div>
                 </div>
                 <div className="text-center">
